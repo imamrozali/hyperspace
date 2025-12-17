@@ -1,0 +1,13 @@
+# dependencies
+/node_modules
+
+/src/lib/database/migrations
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/.swc/
+
+.env

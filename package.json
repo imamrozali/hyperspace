@@ -1,0 +1,69 @@
+{
+  "name": "hyperspace",
+  "version": "0.1.0",
+  "private": true,
+  "author": {
+    "email": "muh.imamrozali@gmail.com",
+    "name": "Muhammad Imam Rozali",
+    "url": ""
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:client": "jest --selectProjects client",
+    "test:server": "jest --selectProjects server",
+    "test:shared": "jest --selectProjects shared",
+    "test:coverage": "jest --coverage",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx shared/database/seed.ts",
+    "db:reset": "tsx shared/database/reset.ts && npm run db:migrate"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.11.2",
+    "@tanstack/react-query": "^5.90.12",
+    "axios": "^1.13.2",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "drizzle-kit": "^0.31.8",
+    "drizzle-orm": "^0.45.1",
+    "idb": "^8.0.3",
+    "idb-keyval": "^6.2.2",
+    "jose": "^6.1.3",
+    "next": "16.0.10",
+    "postgres": "^3.4.7",
+    "react": "19.2.1",
+    "react-dom": "19.2.1",
+    "react-redux": "^9.2.0",
+    "redux-persist": "^6.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/bcrypt": "^6.0.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/testing-library__jest-dom": "^6.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.10",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5"
+  },
+  "overrides": {
+    "@esbuild-kit/esm-loader": "npm:tsx@^4.21.0",
+    "@esbuild-kit/core-utils": "npm:tsx@^4.21.0"
+  }
+}
