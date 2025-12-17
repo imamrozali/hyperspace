@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-      - run: npm ci
+      - run: npm ci --include=optional
       - run: npm rebuild
       - run: npm run lint
 
@@ -27,18 +27,20 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-      - run: npm ci
+      - run: npm ci --include=optional
       - run: npm rebuild
       - run: npm run test:coverage
 
   build:
     runs-on: ubuntu-latest
+    env:
+      NEXT_TURBO_FORCE: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      - run: npm ci
+      - run: npm ci --include=optional
       - run: npm rebuild
       - run: npm run build
