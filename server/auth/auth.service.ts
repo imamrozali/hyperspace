@@ -23,7 +23,7 @@ export class AuthService {
     await this.userRepo.createUserIdentifier(user.id, 'username', username, false);
     await this.userRepo.createUserIdentifier(user.id, 'password', hash, true);
 
-    const { organization, role, organizationUnitIds } = await this.organizationRepo.createOrganizationWithDefaults(user.id, organizationName);
+    const { organization } = await this.organizationRepo.createOrganizationWithDefaults(user.id, organizationName);
 
     // Create session
     const { sessionId } = await this.sessionRepo.createSession(user.id);
@@ -46,7 +46,7 @@ export class AuthService {
 
     const { sessionId } = await this.sessionRepo.createSession(user.user.id);
 
-    const { organizationId, roleId, organizationUnitIds } = await this.organizationRepo.getUserActiveOrganization(user.user.id);
+    const { organizationId } = await this.organizationRepo.getUserActiveOrganization(user.user.id);
 
     return { sessionId, user: { id: user.user.id, activeOrganizationId: organizationId } };
   }

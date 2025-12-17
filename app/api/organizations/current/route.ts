@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const { organizationId, roleId, organizationUnitIds } = await organizationRepo.getUserActiveOrganization(session.userId);
+    const { organizationId } = await organizationRepo.getUserActiveOrganization(session.userId);
 
     // Get organization details
     const organization = await organizationRepo.getOrganizationById(organizationId);
@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
     return new Response(stream, {
       headers: { 'Content-Type': 'application/json' },
     });
-  } catch (error) {
+   } catch {
     const stream = new ReadableStream({
       start(controller) {
         controller.enqueue(new TextEncoder().encode(JSON.stringify({ error: 'Organization not found' })));

@@ -6,7 +6,6 @@ import { setCurrentOrganization } from '@/client/store/slices/organizationSlice'
 import { setCurrentOrganizationUnit } from '@/client/store/slices/organizationUnitSlice';
 import { useAppDispatch } from '@/client/store/hooks';
 import { clearAllData } from '@/client/store';
-import { encrypt } from '@/client/lib/crypto';
 
 export function useLogin() {
   const queryClient = useQueryClient();

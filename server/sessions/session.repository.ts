@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { eq } from 'drizzle-orm';
 import { db } from '../../shared/database';
 import { sessions } from '../../shared/database/schema';
-import { signSession, verifySession } from '../auth/session';
+import { signSession } from '../auth/session';
 
 function hashString(str: string): string {
   return crypto.createHash('sha256').update(str).digest('hex');

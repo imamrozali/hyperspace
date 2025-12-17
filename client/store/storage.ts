@@ -1,6 +1,6 @@
-import { openDB, deleteDB } from 'idb';
+import { openDB, deleteDB, IDBPDatabase } from 'idb';
 
-let dbPromise: Promise<any> | null = null;
+let dbPromise: Promise<IDBPDatabase> | null = null;
 
 const getDB = () => {
   if (!dbPromise && typeof window !== 'undefined') {
@@ -34,7 +34,6 @@ export const indexedDBStorage = {
       const tx = db.transaction('app', 'readwrite');
       const store = tx.objectStore('app');
       await store.put(value, key);
-      await tx.done;
     } catch (error) {
       console.error('IndexedDB set error:', error);
     }
@@ -46,7 +45,6 @@ export const indexedDBStorage = {
       const tx = db.transaction('app', 'readwrite');
       const store = tx.objectStore('app');
       await store.delete(key);
-      await tx.done;
     } catch (error) {
       console.error('IndexedDB remove error:', error);
     }
@@ -58,7 +56,6 @@ export const indexedDBStorage = {
       const tx = db.transaction('app', 'readwrite');
       const store = tx.objectStore('app');
       await store.clear();
-      await tx.done;
     } catch (error) {
       console.error('IndexedDB clear error:', error);
     }

@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
     return new Response(stream, {
       headers: { 'Content-Type': 'application/json' },
     });
-  } catch (error) {
+   } catch {
     const stream = new ReadableStream({
       start(controller) {
         controller.enqueue(new TextEncoder().encode(JSON.stringify({ error: 'Organization unit not found' })));
