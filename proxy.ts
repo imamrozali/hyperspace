@@ -15,7 +15,7 @@ function generateNonce(): string {
 }
 
 function buildCSP(nonce: string): string {
-  return `default-src 'self'; script-src 'self' 'nonce-${nonce}' 'unsafe-eval'; style-src 'self' 'nonce-${nonce}'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' ws: wss:;`;
+  return `default-src 'self'; script-src 'self' 'nonce-${nonce}' 'unsafe-eval' 'sha256-OBTN3RiyCV4Bq7dFqZ5a2pAXjnCcCYeTJMO2I/LYKeo=' 'sha256-lA4VhwlCKx3+7+6YR5MGHA8CTJXDvtOl1rkC9XsUMNE=' 'sha256-D+vK5R8BDPmxEGCHDK8O9vgJUjUouzEbRODnrtvTN88=' 'sha256-h/Z5yX8OU1aTs78GsmGlL0mTh8xx2IcWbqBJm+fHbXI=' 'sha256-5eQiQ0HjeLWplVvFkhu8DLCiEU8Px/sbvfGgU5HxHkQ=' 'sha256-/jV7QCgR5qOM0DRABbTpyX37jjUMRzdUULzsAi/vq6Y='; style-src 'self' 'nonce-${nonce}'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' ws: wss:;`;
 }
 
 function applySecurityHeaders(res: NextResponse): NextResponse {
