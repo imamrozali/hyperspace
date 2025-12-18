@@ -225,7 +225,8 @@ export const organizationUnitsRelations = relations(organizationUnits, ({ one, m
   users: many(userOrganizationUnits),
 }));
 
-export const rolesRelations = relations(roles, ({ many }) => ({
+export const rolesRelations = relations(roles, ({ one, many }) => ({
+  organization: one(organizations, { fields: [roles.organizationId], references: [organizations.id] }),
   permissions: many(rolePermissions),
 }));
 

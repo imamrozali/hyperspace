@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AuthService, UserRepository, SessionRepository, OrganizationRepository } from './server';
-
+import crypto from 'crypto';
 
 const authService = new AuthService(
   new UserRepository(),
@@ -10,7 +10,56 @@ const authService = new AuthService(
 
 const PUBLIC_FILE = /\.(.*)$/;
 
-export default async function middleware(request: NextRequest) {
+function generateNonce(): string {
+  return crypto.randomBytes(16).toString('base64');
+}
+
+function buildCSP(nonce: string): string {
+  return `default-src 'self'; script-src 'self' 'nonce-${nonce}'; style-src 'self' 'nonce-${nonce}'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self';`;
+}
+
+function applySecurityHeaders(res: NextResponse): NextResponse {
+  const nonce = generateNonce();
+  const csp = buildCSP(nonce);
+  res.headers.set('Content-Security-Policy', csp);
+  res.headers.set('x-nonce', nonce);
+  return res;
+}
+
+async function handleAuth(request: NextRequest): Promise<NextResponse | null> {
+  const { pathname } = request.nextUrl;
+
+  if (pathname !== '/login') {
+    return null;
+  }
+
+  if (!process.env.JWT_SECRET) {
+    return applySecurityHeaders(NextResponse.next());
+  }
+
+  const sessionCookie = request.cookies.get('session_app')?.value;
+  if (!sessionCookie) {
+    return applySecurityHeaders(NextResponse.next());
+  }
+
+  try {
+    const session = await authService.checkSession(sessionCookie);
+    if (session?.userId) {
+      return applySecurityHeaders(
+        NextResponse.redirect(new URL('/dashboard', request.nextUrl))
+      );
+    }
+  } catch (error) {
+    console.error('Session check failed:', error);
+    const res = NextResponse.next();
+    res.cookies.delete('session_app');
+    return applySecurityHeaders(res);
+  }
+
+  return null; 
+}
+
+export default async function middleware(request: NextRequest): Promise<NextResponse> {
   const { pathname, searchParams } = request.nextUrl;
 
   if (
@@ -20,33 +69,15 @@ export default async function middleware(request: NextRequest) {
     pathname === '/favicon.ico' ||
     PUBLIC_FILE.test(pathname)
   ) {
-    return NextResponse.next();
+    return applySecurityHeaders(NextResponse.next());
   }
 
-
-  if (pathname === '/login') {
-    if (!process.env.JWT_SECRET) return NextResponse.next();
-
-    const sessionCookie = request.cookies.get('session_app')?.value;
-
-    if (!sessionCookie) return NextResponse.next();
-
-    try {
-      const session = await authService.checkSession(sessionCookie);
-
-      if (session?.userId) {
-        return NextResponse.redirect(
-          new URL('/dashboard', request.nextUrl)
-        );
-      }
-    } catch {
-      const res = NextResponse.next();
-      res.cookies.delete('session_app');
-      return res;
-    }
+  const authResponse = await handleAuth(request);
+  if (authResponse) {
+    return authResponse;
   }
 
-  return NextResponse.next();
+  return applySecurityHeaders(NextResponse.next());
 }
 
 export const config = {
