@@ -15,7 +15,7 @@ function generateNonce(): string {
 }
 
 function buildCSP(nonce: string): string {
-  return `default-src 'self'; script-src 'self' 'nonce-${nonce}'; style-src 'self' 'nonce-${nonce}'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self';`;
+  return `default-src 'self'; script-src 'self' 'nonce-${nonce}' 'unsafe-eval'; style-src 'self' 'nonce-${nonce}'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' ws: wss:;`;
 }
 
 function applySecurityHeaders(res: NextResponse): NextResponse {
