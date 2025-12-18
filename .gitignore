@@ -13,7 +13,7 @@ package-lock.json
 
 .env
 
-tsconfig.tsbuildinfo
+/tsconfig.tsbuildinfo
 
 # Playwright
 node_modules/
